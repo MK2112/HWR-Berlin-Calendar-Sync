@@ -19,8 +19,9 @@ This Python script synchronizes events from the lecture plan of the Hochschule f
     - `update_depth` - Set the number of events to update into the future (default: 50)
 
 ## Usage
-For a full sync, writing everything there is at the source to the calendar, execute: `python hwr.py`
-Do this once to populate your calendar with all events. Then, to update a specific number of future events (minimizing API usage), use: `python hwr.py update`
+For a full sync, writing everything there is at the source to the calendar, execute: `python hwr.py`<br>
+Do this once to populate your calendar with all events.<br>
+Then, to update a specific number of future events (minimizing API usage), use: `python hwr.py update`
 
 **Note:** The script runs indefinitely, automatically updating the calendar at given intervals.
 
