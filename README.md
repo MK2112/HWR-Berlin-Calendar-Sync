@@ -5,7 +5,7 @@ This Python script synchronizes events from the lecture plan of the Hochschule f
 
 ## Requirements
 1. Download/Clone this project repository and navigate to it
-2. Open a terminal in the project directory and install the required Python packages like so: `pip install -r requirements.txt`
+2. Open a terminal in the project directory and install the required Python packages like so:<br>`pip install -r requirements.txt`
 3. Log into your Google account and create a new, empty Google Calendar; Note the calendar title
 4. Go to the [Google API Console](https://console.developers.google.com/apis/dashboard)
 5. Create a new project
