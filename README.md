@@ -26,3 +26,10 @@ Then, to update a specific number of future events (minimizing API usage), use: 
 
 ## License
 This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+### Contributions
+Contributions and feedback are welcome. Feel free to open issues or pull requests.
+
+### Disclaimer
+This script is provided as-is, without any warranties or guarantees.<br>
+Users are responsible for ensuring compliance with applicable laws and regulations.
