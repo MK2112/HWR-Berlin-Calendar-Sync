@@ -1,8 +1,7 @@
 # HWR Berlin - Google Calendar Lecture Sync
 
 ## Overview
-This Python script synchronizes events from the lecture plan of the Hochschule für Wirtschaft und Recht Berlin (HWR Berlin) to your Google Calendar.<br>
-It identifies new events and updates your Calendar accordingly. Outdated events in your Calendar are marked as such (not deleted) for transparency.
+This Python script synchronizes events from the lecture plan of the Hochschule für Wirtschaft und Recht Berlin (HWR Berlin) to your Google Calendar. It identifies new events and updates your Calendar accordingly. Outdated events in your Calendar are marked as such (not deleted) for transparency.
 
 ## Requirements
 1. Download/Clone this project repository and navigate to it
