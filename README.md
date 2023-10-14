@@ -10,7 +10,7 @@ This Python script synchronizes events from the lecture plan of the Hochschule f
 5. Create a new project
 6. Enable the Google Calendar API
 7. Generate a new OAuth 2.0 Client ID
-8. Download the credentials file and save it as `credentials.json` in the project directory
+8. Download the credentials file and save it as `credentials.json` in the project directory, next to the `hwr.py`
 9. Open the `hwr.py` file in a text editor of your choice and modify the 'Settings' section:
     - `hwr_ics_link` - Set the URL to link to the ICS file for your lecture plan
     - `google_calendar_name` - Set the previously noted title of your Google Calendar
