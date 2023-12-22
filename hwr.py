@@ -2,15 +2,15 @@ import sys
 import time
 import datetime
 from datetime import datetime
-from modules.ics_file import ics_file
-from modules.calendar import calendar
+from modules.ics_file import ICS_File
+from modules.gcalendar import GCalendar
 
-## Settings ##
+## User Settings ##
 # ------------------------------------------------------------
 
-# ICS file link
+# ICS file link - CHANGE THIS FOR YOUR OWN CLASSES
 hwr_ics_link = 'https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester6/kursb'
-# Google Calendar name
+# Google Calendar name - CLASS SCHEDULE WILL BE IMPORTED/UPDATED TO HERE
 google_calendar_name = 'HWR'
 # Update Schedule in seconds
 scheduled_seconds = 28800
@@ -19,13 +19,13 @@ update_depth = 50
 
 # ------------------------------------------------------------
 
-# Events have same start and end time and location
+# Events have same start and end time and physical location
 # ICS: [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
 def identical_events(ics_event, cal_event):
    # 2021-01-19T17:00:00+01:00 -> 2021-01-19 17:00:00
    start_cal = datetime.fromisoformat(cal_event['start'].get('dateTime', cal_event['start'].get('date'))).replace(tzinfo=None)
-   start_ics = ics_event[4]
    end_cal   = datetime.fromisoformat(cal_event['end'].get('dateTime', cal_event['end'].get('date'))).replace(tzinfo=None)
+   start_ics = ics_event[4]
    end_ics = ics_event[5]
    summary_cal = cal_event['summary']
    summary_ics = ics_event[1]
@@ -53,11 +53,11 @@ def main():
    else:
       full_sync = True
 
-   hwr_ics = ics_file(url=hwr_ics_link)
-   hwr_cal = calendar(title=google_calendar_name, event_amount=update_depth)
+   hwr_ics = ICS_File(url=hwr_ics_link)
+   hwr_cal = GCalendar(title=google_calendar_name, event_amount=update_depth)
    hwr_cal.load_events(full_sync)
 
-   # Find those ICS events that are not in the calendar
+   # Find ICS events not present in calendar
    counter = 0
    for ics_event in hwr_ics.events:
       counter += 1
@@ -84,5 +84,5 @@ def main():
 if __name__ == '__main__':
    while True:
       main()
-      print(f'<< Sleeping for {scheduled_seconds / 60 / 60} hours...\n')
+      print(f'<< Sleeping for {scheduled_seconds / 60.0 / 60.0} hours...\n')
       time.sleep(scheduled_seconds)
