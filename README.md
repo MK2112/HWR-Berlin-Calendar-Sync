@@ -1,26 +1,35 @@
 # HWR Berlin - Google Calendar Lecture Sync
 
-This Python script synchronizes events from the lecture plan of the Hochschule für Wirtschaft und Recht Berlin (HWR Berlin) to your Google Calendar. It identifies new events and updates your Calendar accordingly. Outdated events in your Calendar are marked as such (not deleted) for transparency.
+This tool synchronizes events from the lecture plan of the Hochschule für Wirtschaft und Recht Berlin (HWR Berlin) to your Google Calendar.<br>
+It identifies new events and updates your Calendar accordingly. Outdated events are marked as such (not deleted).
 
-## Requirements
+## Setup
 1. Download/Clone this project repository and navigate to it
-2. Open a terminal in the project directory and install the required Python packages like so:<br>`pip install -r requirements.txt`
-3. Log into your Google account and create a new, empty Google Calendar; Note the calendar title
-4. Go to the [Google API Console](https://console.developers.google.com/apis/dashboard)
-5. Create a new project
-6. Enable the Google Calendar API
-7. Generate a new OAuth 2.0 Client ID
-8. Download the credentials file and save it as `credentials.json` in the project directory, next to the `hwr.py`
-9. Open the `hwr.py` file in a text editor of your choice and modify the 'Settings' section:
+2. Install Python 3.11 or higher from [python.org](https://www.python.org/downloads/) if you don't have it already
+3. Open a terminal in the project directory and install all required Python packages at once like so:<br>`pip install -r requirements.txt`
+4. Open your browser, log into your Google account and create a new, empty Google Calendar; **Note the calendar title**
+5. Google will not yet make the new calendar visible on your phone. Fix this here: [Google Calendar Sync Settings](https://calendar.google.com/calendar/u/0/syncselect)
+6. Go to the [Google API Console](https://console.developers.google.com/apis/dashboard)
+7. Create a new project
+8. Enable the Google Calendar API
+9. Generate a new OAuth 2.0 Client ID
+10. Download the credentials json file, save it as `credentials.json` in the project base directory, next to the `hwr.py`
+11. Open the `hwr.py` file in a text editor of your choice and modify the 'Settings' section:
     - `hwr_ics_link` - Set the URL to link to the ICS file for your lecture plan
-    - `google_calendar_name` - Set the previously noted title of your Google Calendar
-    - `scheduled_seconds` - Set the update interval in seconds (default: 28800 = 8 hours)
-    - `update_depth` - Set the number of events to update into the future (default: 50)
+        - Go to the [HWR Berlin lecture plan](https://moodle.hwr-berlin.de/fb2-stundenplan/stundenplan.php)
+        - Select your course and semester, then right-click the `Stundenplan herunterladen (ICS)` and copy the link
+        - Replace the existing link in the `hwr.py` script with the copied link
+    - `google_calendar_name` - Set this to your previously noted title of your Google Calendar
+    - `scheduled_seconds` - OPTIONAL - Set the update interval in seconds (default: 28800 = 8 hours)
+    - `update_depth` - OPTIONAL - Set the number of events to update into the future (default: 50)
+
+**Note:** On a very first run, you will be asked to grant access to your Google Calendar. This is a one-time process, fully controlled by Google.
+Google will also inform you that the API project you created is not verified with them. This is normal. The [Google Calendar API](https://developers.google.com/calendar/api/quickstart/python) documentation provides more information on how to set up the API and generate the credentials file.
 
 ## Usage
-For a full sync, writing everything there is at the source to the calendar, execute: `python hwr.py`<br>
-Do this once to populate your calendar with all events.<br>
-Then, to update a specific number of future events (minimizing API usage), use: `python hwr.py update`
+For a full sync, writing everything there is to the calendar, execute: `python hwr.py`<br>
+Do this once, for an initial run, to populate your calendar with all events.<br>
+From there on out, update for a specific number of future events (minimizing API usage and server load) like so: `python hwr.py update`
 
 **Note:** The script runs indefinitely, automatically updating the calendar at given intervals.
 
