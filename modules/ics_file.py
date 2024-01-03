@@ -32,7 +32,7 @@ class ICS_File:
                
       return events
    
-   # Replace some characters with prettier ones
+   # Replace some characters with ... prettier ones
    def pretty_print(self, text):
       replacements = {
          "\\,": ", ",

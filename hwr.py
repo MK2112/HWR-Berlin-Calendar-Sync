@@ -5,12 +5,13 @@ from datetime import datetime
 from modules.ics_file import ICS_File
 from modules.gcalendar import GCalendar
 
-## User Settings ##
+## Settings ##
 # ------------------------------------------------------------
 
-# ICS file link - CHANGE THIS FOR YOUR OWN CLASSES
+# ICS file link - CHANGE THIS FOR YOUR OWN CLASSES 
+# Copy the link behind 'Stundenplan herunterladen (ICS)' on the HWR class schedule page
 hwr_ics_link = 'https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester6/kursb'
-# Google Calendar name - CLASS SCHEDULE WILL BE IMPORTED/UPDATED TO HERE
+# Google Calendar name - CLASS SCHEDULE WILL BE IMPORTED TO/UPDATED HERE
 google_calendar_name = 'HWR'
 # Update Schedule in seconds
 scheduled_seconds = 28800
@@ -18,6 +19,7 @@ scheduled_seconds = 28800
 update_depth = 50
 
 # ------------------------------------------------------------
+## END Settings ##
 
 # Events have same start and end time and physical location
 # ICS: [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
