@@ -15,7 +15,7 @@ hwr_ics_link = 'https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctyp
 google_calendar_name = 'HWR'
 # Update Schedule in seconds
 scheduled_seconds = 28800
-# How many events to update into the future
+# How many events to update into the future ( to not stress the API too much )
 update_depth = 50
 
 # ------------------------------------------------------------
@@ -50,25 +50,22 @@ def identical_events(ics_event, cal_event):
 
 
 def main():
-   if len(sys.argv) > 1 and sys.argv[1] == "update":
-      full_sync = False
-   else:
-      full_sync = True
 
+   full_sync = False if len(sys.argv) > 1 and sys.argv[1] == "update" else True
    hwr_ics = ICS_File(url=hwr_ics_link)
    hwr_cal = GCalendar(title=google_calendar_name, event_amount=update_depth)
    hwr_cal.load_events(full_sync)
 
    # Find ICS events not present in calendar
-   counter = 0
+   event_index = 0
    for ics_event in hwr_ics.events:
-      counter += 1
+      event_index += 1
       found = False
       for cal_event in hwr_cal.events:
          if identical_events(ics_event, cal_event):
             found = True
             break
-      if not found and counter <= update_depth and ics_event[4] >= datetime.now():
+      if not found and event_index <= update_depth and ics_event[4] >= datetime.now():
          hwr_cal.create_event(ics_event)
 
    # Update events in calendar that are not in ics
