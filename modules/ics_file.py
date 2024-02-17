@@ -6,6 +6,7 @@ class ICS_File:
       self.url = url
       self.events = self.get_ics(url)
 
+
    # Events look like [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
    def get_ics(self, url):
       # Read plain .ics data from the url
@@ -29,9 +30,9 @@ class ICS_File:
                current_event.append(self.to_datetime(line[line.find(':')+1:-1]))
             elif line.startswith('\t'):
                current_event[-1] = current_event[-1] + self.pretty_print(line[line.find('\t')+1:-1])
-               
       return events
    
+
    # Replace some characters with prettier ones
    def pretty_print(self, text):
       replacements = {
@@ -43,8 +44,8 @@ class ICS_File:
       
       for old, new in replacements.items():
          text = text.replace(old, new)
-
       return text
+
 
    # Convert date and time to datetime object, 20220401T140000Z possible
    def to_datetime(self, time):

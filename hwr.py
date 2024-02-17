@@ -49,8 +49,7 @@ def identical_events(ics_event, cal_event):
    return False
 
 
-def main():
-
+def run():
    full_sync = False if len(sys.argv) > 1 and sys.argv[1] == "update" else True
    hwr_ics = ICS_File(url=hwr_ics_link)
    hwr_cal = GCalendar(title=google_calendar_name, event_amount=update_depth)
@@ -80,8 +79,9 @@ def main():
          hwr_cal.outdate_event(cal_event)
    print('>> Update complete\n')
 
+
 if __name__ == '__main__':
    while True:
-      main()
+      run()
       print(f'<< Sleeping for {scheduled_seconds / 60.0 / 60.0} hours...\n')
       time.sleep(scheduled_seconds)
