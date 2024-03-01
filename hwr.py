@@ -6,7 +6,7 @@ from modules.ics_file import ICS_File
 from modules.gcalendar import GCalendar
 
 ## Settings ##
-# ------------------------------------------------------------
+# -----------------------
 
 # ICS file link - CHANGE THIS FOR YOUR OWN CLASSES 
 # Copy the link behind 'Stundenplan herunterladen (ICS)' on the HWR class schedule page
@@ -18,7 +18,7 @@ scheduled_seconds = 28800
 # How many events to update into the future ( to not stress the API too much )
 update_depth = 50
 
-# ------------------------------------------------------------
+# -----------------------
 ## END Settings ##
 
 # Events have same start and end time and physical location
@@ -81,6 +81,7 @@ def run():
 
 
 if __name__ == '__main__':
+   # Scheduled loop
    while True:
       run()
       print(f'<< Sleeping for {scheduled_seconds / 60.0 / 60.0} hours...\n')
