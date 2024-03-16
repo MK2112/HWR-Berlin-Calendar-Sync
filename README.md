@@ -1,8 +1,7 @@
 # HWR Berlin - Google Calendar Lecture Sync
 
 Sync lectures of the Hochschule für Wirtschaft und Recht Berlin (HWR Berlin) with your Google Calendar.<br>
-This script identifies new or changed calendar entries, updates your Google Calendar, and marks outdated events as such<br>
-(without deleting them, just to be safe).
+This script identifies new or changed calendar entries, updates your Google Calendar, and marks outdated events as such (without deleting them, just to be safe).
 
 ## Setup
 1. Download/Clone this repository and navigate to it
