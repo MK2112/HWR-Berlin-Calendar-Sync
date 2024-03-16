@@ -13,13 +13,14 @@ from modules.gcalendar import GCalendar
 hwr_ics_link = 'https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester6/kursb'
 # Google Calendar name - CLASS SCHEDULE WILL BE IMPORTED TO/UPDATED HERE
 google_calendar_name = 'HWR'
-# Update Schedule in seconds
-scheduled_seconds = 28800
 # How many events to update into the future ( to not stress the API too much )
 update_depth = 50
 
 # -----------------------
 ## END Settings ##
+
+# Update Schedule
+scheduled_seconds = 8 * 60 ** 2
 
 # Events have same start and end time and physical location
 # ICS: [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
