@@ -1,5 +1,6 @@
 import sys
 import time
+import argparse
 import datetime
 from datetime import datetime
 from modules.ics_file import ICS_File
@@ -7,24 +8,22 @@ from modules.gcalendar import GCalendar
 
 ## Settings ##
 # -----------------------
-
 # ICS file link - CHANGE THIS FOR YOUR OWN CLASSES 
 # Copy the link behind 'Stundenplan herunterladen (ICS)' on the HWR class schedule page
 hwr_ics_link = 'https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester6/kursb'
 # Google Calendar name - CLASS SCHEDULE WILL BE IMPORTED TO/UPDATED HERE
 google_calendar_name = 'HWR'
-# How many events to update into the future ( to not stress the API too much )
+# How many events to update into the future (to not stress the GCal API)
 update_depth = 50
-
 # -----------------------
 ## END Settings ##
 
-# Update Schedule
+# Update Schedule (in seconds, to not stress both APIs)
 scheduled_seconds = 8 * 60 ** 2
 
 # Events have same start and end time and physical location
 # ICS: [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
-def identical_events(ics_event, cal_event):
+def identical_events(ics_event: list, cal_event: dict) -> bool:
    # 2021-01-19T17:00:00+01:00 -> 2021-01-19 17:00:00
    start_cal = datetime.fromisoformat(cal_event['start'].get('dateTime', cal_event['start'].get('date'))).replace(tzinfo=None)
    end_cal   = datetime.fromisoformat(cal_event['end'].get('dateTime', cal_event['end'].get('date'))).replace(tzinfo=None)
@@ -50,11 +49,10 @@ def identical_events(ics_event, cal_event):
    return False
 
 
-def run():
-   full_sync = False if len(sys.argv) > 1 and sys.argv[1] == "update" else True
+def run(args: argparse.Namespace):
    hwr_ics = ICS_File(url=hwr_ics_link)
    hwr_cal = GCalendar(title=google_calendar_name, event_amount=update_depth)
-   hwr_cal.load_events(full_sync)
+   hwr_cal.load_events(not args.update)
 
    # Find ICS events not present in calendar
    event_index = 0
@@ -82,8 +80,11 @@ def run():
 
 
 if __name__ == '__main__':
+   parser = argparse.ArgumentParser()
+   parser.add_argument('--update', help=f'Update only the next {update_depth} events', action='store_true')
+   args = parser.parse_args()
    # Scheduled loop
    while True:
-      run()
+      run(args)
       print(f'<< Sleeping for {scheduled_seconds / 60.0 / 60.0} hours...\n')
       time.sleep(scheduled_seconds)
