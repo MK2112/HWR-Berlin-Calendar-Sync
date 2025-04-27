@@ -24,29 +24,35 @@ scheduled_seconds = 8 * 60 ** 2
 # Events have same start and end time and physical location
 # ICS: [DTSTAMP, SUMMARY, LOCATION, DESCRIPTION, DTSTART, DTEND]
 def identical_events(ics_event: list, cal_event: dict) -> bool:
-   # 2021-01-19T17:00:00+01:00 -> 2021-01-19 17:00:00
-   start_cal = datetime.fromisoformat(cal_event['start'].get('dateTime', cal_event['start'].get('date'))).replace(tzinfo=None)
-   end_cal   = datetime.fromisoformat(cal_event['end'].get('dateTime', cal_event['end'].get('date'))).replace(tzinfo=None)
-   start_ics = ics_event[4]
-   end_ics = ics_event[5]
-   summary_cal = cal_event['summary']
-   summary_ics = ics_event[1]
-
-   if 'location' in cal_event:
-      location_cal = cal_event['location']
-      location_ics = ics_event[2]
-
-      if start_cal == start_ics and \
-         end_cal == end_ics and \
-         location_cal == location_ics and \
-         summary_cal == summary_ics:
-         return True
-   else:
-      if start_cal == start_ics and \
-         end_cal == end_ics and \
-         summary_cal == summary_ics:
-         return True
-   return False
+    # Compare ICS and Google Calendar events for equality, robustly.
+    # Handles whitespace, missing fields, and minor formatting differences.
+    # (2021-01-19T17:00:00+01:00 -> 2021-01-19 17:00:00)
+    try:
+        # Parse calendar event times
+        start_cal = datetime.fromisoformat(cal_event['start'].get('dateTime', cal_event['start'].get('date'))).replace(tzinfo=None)
+        end_cal = datetime.fromisoformat(cal_event['end'].get('dateTime', cal_event['end'].get('date'))).replace(tzinfo=None)
+        # Parse ICS event times
+        start_ics = ics_event[4]
+        end_ics = ics_event[5]
+        # Compare summary (case-insensitive, strip whitespace)
+        summary_cal = cal_event.get('summary', '').strip().lower()
+        summary_ics = str(ics_event[1]).strip().lower() if len(ics_event) > 1 else ''
+        # Compare location (case-insensitive, strip whitespace)
+        location_cal = cal_event.get('location', '').strip().lower()
+        location_ics = str(ics_event[2]).strip().lower() if len(ics_event) > 2 else ''
+        # Compare times
+        if start_cal != start_ics or end_cal != end_ics:
+            return False
+        # Compare summary
+        if summary_cal != summary_ics:
+            return False
+        # If location exists in both, compare
+        if location_cal and location_ics and location_cal != location_ics:
+            return False
+        return True
+    except Exception as e:
+        print(f"[identical_events] Warning: error comparing events: {e}")
+        return False
 
 
 def run(args: argparse.Namespace):
@@ -75,7 +81,8 @@ def run(args: argparse.Namespace):
             found = True
             break
       if not found:
-         hwr_cal.outdate_event(cal_event)
+         # Pass the event ID to outdate_event, not the whole event
+         hwr_cal.outdate_event(cal_event['id'])
    print('>> Update complete\n')
 
 
