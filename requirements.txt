@@ -1,5 +1,5 @@
 google_api_python_client==2.55.0
 google_auth_oauthlib==0.5.2
 icalendar==4.1.0
-protobuf==4.21.6
+protobuf==4.25.8
 requests==2.32.4
