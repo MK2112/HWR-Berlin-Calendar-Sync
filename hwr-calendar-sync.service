@@ -1,0 +1,19 @@
+[Unit]
+Description=HWR Berlin Calendar Sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/path-to/HWR-Berlin-Calendar-Sync
+ExecStart=/usr/bin/python3 /path-to/HWR-Berlin-Calendar-Sync/hwr.py --update
+Restart=on-failure
+RestartSec=60
+
+# (Optional) Environment variables (alternative to config.yaml)
+# Environment=HWR_ICS_LINK=https://...
+# Environment=GOOGLE_CALENDAR_NAME=HWR
+
+[Install]
+WantedBy=multi-user.target

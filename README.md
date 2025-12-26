@@ -14,14 +14,14 @@ This script identifies new or changed calendar entries, updates your Google Cale
     - Enable the `Google Calendar API`
     - Generate a new OAuth 2.0 Client ID
     - Download the json file with your credentials, rename it to `credentials.json` and move it to the project's root folder, next to `hwr.py`
-7. Configure `hwr.py`:
-    - Open `hwr.py` in a text editor and modify the 'Settings' section:
-        - `hwr_ics_link` - Set the URL to link to the ICS file for your lecture plan
+7. Configure `config.yaml`:
+    - Open `config.yaml` in a text editor and set:
+        - `hwr_ics_link` - URL to the ICS file for your lecture plan
             - Go to the HWR Berlin's Lecture Plan
             - Select your course and semester, then right-click copy the link `Stundenplan herunterladen (ICS)`
-            - Replace the existing link in the `hwr.py` script with the copied link
-        - `google_calendar_name` - Set this to the previously noted title of your Google Calendar
-        - `update_depth` - (Optional) Set the number of events to update into the future (default: 50)
+        - `google_calendar_name` - Title of your Google Calendar
+        - `update_depth` - (Optional) Number of events to sync (default: 50)
+        - `update_interval_hours` - (Optional) Sync interval in hours (default: 8)
 
 **Note:** The initial run will prompt you to grant your API project access to your Google Calendar.<br>
 This is a one-time process fully controlled by Google. Google may inform you that the API project is not verified, which is true and normal.<br>
@@ -41,12 +41,36 @@ python hwr.py --update
 
 **Note:** The script runs indefinitely, automatically updating the calendar at given intervals.
 
+## Docker
+
+Run in a container with environment variables:
+```bash
+docker build -t hwr-calendar-sync .
+docker run -d \
+  -e HWR_ICS_LINK="the-hwr-ics-url" \
+  -e GOOGLE_CALENDAR_NAME="HWR" \
+  -e UPDATE_INTERVAL_HOURS=8 \
+  -e UPDATE_DEPTH=50 \
+  -v $(pwd)/credentials.json:/app/credentials.json \
+  -v $(pwd)/token.pickle:/app/token.pickle \
+  hwr-calendar-sync
+```
+
+> **Note:** Run interactively first (`docker run -it ...`) to complete OAuth setup, then switch to detached mode.
+
+## Systemd Service (Linux only)
+
+A service file `hwr-calendar-sync.service` is included. To install:
+```bash
+# Edit paths in the service file first
+sudo cp hwr-calendar-sync.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now hwr-calendar-sync
+```
+
 ## License
-This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT.
 
-### Contributions
-Contributions and feedback are welcome. Feel free to open issues or pull requests.
-
-### Disclaimer
+## Disclaimer
 This script is provided as-is, without any warranties or guarantees.<br>
 Users are responsible for ensuring compliance with applicable laws and regulations.
