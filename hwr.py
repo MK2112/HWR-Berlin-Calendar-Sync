@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import yaml
 import argparse
@@ -73,6 +72,11 @@ def identical_events(ics_event: list, cal_event: dict) -> bool:
 def run(args: argparse.Namespace):
     hwr_ics = ICS_File(url=hwr_ics_link)
     hwr_cal = GCalendar(title=google_calendar_name, event_amount=update_depth)
+
+    # Process queued failed operations
+    hwr_cal.process_offline_queue()
+    
+    # Load events from calendar
     hwr_cal.load_events(not args.update)
 
     # Find ICS events not present in calendar
