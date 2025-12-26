@@ -21,9 +21,17 @@ def load_config():
     # [!] Environment variables override *at all times*
     return {
         "hwr_ics_link": os.environ.get("HWR_ICS_LINK", config.get("hwr_ics_link", "")),
-        "google_calendar_name": os.environ.get("GOOGLE_CALENDAR_NAME", config.get("google_calendar_name", "HWR")),
-        "update_depth": int(os.environ.get("UPDATE_DEPTH", config.get("update_depth", 50))),
-        "update_interval_hours": float(os.environ.get("UPDATE_INTERVAL_HOURS", config.get("update_interval_hours", 8))),
+        "google_calendar_name": os.environ.get(
+            "GOOGLE_CALENDAR_NAME", config.get("google_calendar_name", "HWR")
+        ),
+        "update_depth": int(
+            os.environ.get("UPDATE_DEPTH", config.get("update_depth", 50))
+        ),
+        "update_interval_hours": float(
+            os.environ.get(
+                "UPDATE_INTERVAL_HOURS", config.get("update_interval_hours", 8)
+            )
+        ),
     }
 
 
@@ -32,7 +40,7 @@ config = load_config()
 hwr_ics_link = config["hwr_ics_link"]
 google_calendar_name = config["google_calendar_name"]
 update_depth = config["update_depth"]
-scheduled_seconds = config["update_interval_hours"] * 60 ** 2
+scheduled_seconds = config["update_interval_hours"] * 60**2
 
 
 # Events have same start and end time and physical location
@@ -43,8 +51,12 @@ def identical_events(ics_event: list, cal_event: dict) -> bool:
     # (2021-01-19T17:00:00+01:00 -> 2021-01-19 17:00:00)
     try:
         # Parse calendar event times
-        start_cal = datetime.fromisoformat(cal_event['start'].get('dateTime', cal_event['start'].get('date'))).replace(tzinfo=None)
-        end_cal = datetime.fromisoformat(cal_event['end'].get('dateTime', cal_event['end'].get('date'))).replace(tzinfo=None)
+        start_cal = datetime.fromisoformat(
+            cal_event["start"].get("dateTime", cal_event["start"].get("date"))
+        ).replace(tzinfo=None)
+        end_cal = datetime.fromisoformat(
+            cal_event["end"].get("dateTime", cal_event["end"].get("date"))
+        ).replace(tzinfo=None)
         # Parse ICS event times
         start_ics = ics_event[4]
         end_ics = ics_event[5]
@@ -75,7 +87,7 @@ def run(args: argparse.Namespace):
 
     # Process queued failed operations
     hwr_cal.process_offline_queue()
-    
+
     # Load events from calendar
     hwr_cal.load_events(not args.update)
 
@@ -107,7 +119,11 @@ def run(args: argparse.Namespace):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--update", help=f"Update only the next {update_depth} events", action='store_true')
+    parser.add_argument(
+        "--update",
+        help=f"Update only the next {update_depth} events",
+        action="store_true",
+    )
     args = parser.parse_args()
     # Scheduled loop
     while True:

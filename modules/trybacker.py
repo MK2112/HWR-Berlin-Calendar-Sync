@@ -94,4 +94,5 @@ class OfflineQueue:
     def is_empty(self):
         return len(self._load()) == 0
 
+
 offline_queue = OfflineQueue()
