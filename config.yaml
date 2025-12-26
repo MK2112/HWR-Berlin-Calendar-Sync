@@ -1,0 +1,12 @@
+# HWR Berlin Calendar Sync Configuration
+# You can also override these settings with environment variables:
+#   HWR_ICS_LINK, GOOGLE_CALENDAR_NAME, UPDATE_DEPTH, UPDATE_INTERVAL_HOURS
+
+# ICS calendar URL to pull from (Copy the link behind 'Stundenplan herunterladen (ICS)')
+hwr_ics_link: "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester6/kursb"
+# GCalendar name to sync to (default: "HWR")
+google_calendar_name: "HWR"
+# Sync interval in hours (default: 8)
+update_interval_hours: 8
+# Number of events to sync (default: 50)
+update_depth: 50
